@@ -1,0 +1,84 @@
+# Configuración para ambiente de desarrollo
+# Copia este archivo a config/dev.yaml y personaliza según tus necesidades
+
+app:
+  name: "Agentic System"
+  version: "0.1.0"
+  environment: "development"
+  debug: true
+
+agent:
+  name: "AgenticBot"
+  description: "Sistema agente conversacional"
+  timeout: 300
+  max_retries: 3
+
+semantic_kernel:
+  model: "gpt-4"
+  temperature: 0.7
+  max_tokens: 2000
+  top_p: 0.9
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+
+memory:
+  type: "in_memory"
+  max_tokens: 4000
+  retention_hours: 24
+  save_history: true
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/agent.log"
+  console_output: true
+
+plugins:
+  native_skills:
+    - name: "calculator"
+      enabled: true
+    - name: "search"
+      enabled: true
+  
+  semantic_skills:
+    - name: "analyzer"
+      enabled: true
+    - name: "generator"
+      enabled: true
+
+planning:
+  mode: "sequential"
+  max_steps: 10
+  verbose: true
+
+services:
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    organization: ""
+    timeout: 30
+  
+  embedding:
+    type: "openai"
+    model: "text-embedding-3-small"
+  
+  vector_store:
+    type: "chroma"
+    url: "http://localhost:8000"
+    persist_directory: "data/chroma"
+
+database:
+  type: "sqlite"  # sqlite, postgresql, mongodb
+  url: "sqlite:///data/agent.db"
+  echo: false
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  reload: true
+  workers: 1
+
+features:
+  reflection: true
+  multi_step_planning: true
+  memory_persistence: false
+  streaming: false
